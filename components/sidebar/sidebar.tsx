@@ -7,8 +7,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { Menu, X } from "lucide-react";
 import Image from "next/image";
 import { geistMono } from "@/components/fonts";
-
-
+import { usePathname } from "next/navigation";
 
 interface NavigationLink {
   label: string;
@@ -184,8 +183,6 @@ export const MobileSidebar = ({
   );
 };
 
-
-
 export const SidebarLink = ({
   link,
   className,
@@ -196,6 +193,17 @@ export const SidebarLink = ({
   props?: Omit<LinkProps, 'href'>;
 }) => {
   const { open, animate } = useSidebar();
+  const pathname = usePathname();
+  const isActive = link.href ? pathname === link.href : false;
+
+  const iconElement = React.isValidElement(link.icon)
+    ? React.cloneElement(link.icon as React.ReactElement<{ className?: string }>, {
+        className: cn(
+          (link.icon as React.ReactElement<{ className?: string }>).props.className,
+          isActive ? "text-gray-500" : "text-neutral-800 dark:text-neutral-200"
+        ),
+      })
+    : link.icon;
 
   if (link.href) {
     return (
@@ -207,7 +215,7 @@ export const SidebarLink = ({
         )}
         {...props}
       >
-        <span className="flex-shrink-0">{link.icon}</span>
+        <span className="flex-shrink-0">{iconElement}</span>
         <motion.span
           animate={{
             display: animate ? (open ? "inline-block" : "none") : "inline-block",
@@ -230,7 +238,7 @@ export const SidebarLink = ({
       )}
       {...props}
     >
-      <span className="flex-shrink-0">{link.icon}</span>
+      <span className="flex-shrink-0">{iconElement}</span>
       <motion.span
         animate={{
           display: animate ? (open ? "inline-block" : "none") : "inline-block",
