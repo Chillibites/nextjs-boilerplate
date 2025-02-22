@@ -1,12 +1,12 @@
 import Image from "next/image";
 import { SidebarLink } from "./sidebar";
 import { auth } from "@/auth";
-
+import { redirect } from "next/navigation";
 export async function ProfileSidebarLink() {
   const session = await auth()
  
   if (!session || !session.user) {
-    return <div>Not authenticated</div>
+    redirect("/");
   }
 
   const link = {
