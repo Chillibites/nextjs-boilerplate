@@ -15,14 +15,12 @@ export default function Error({
   }, [error])
  
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-neutral-900 px-4">
-      <div className="text-center">
-        <h2 className="text-3xl font-bold text-gray-900 dark:text-neutral-100 mb-4">
-          Something went wrong!
-        </h2>
+    <div className="min-h-screen flex items-center justify-center bg-background dark:bg-background px-4">
+      <div className="bg-card shadow rounded-md p-6 text-center">
+        <h2 className="text-3xl font-bold mb-4 text-card-foreground">Something went wrong!</h2>
         <button
           onClick={() => reset()}
-          className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:bg-blue-500 dark:hover:bg-blue-600"
+          className="px-4 py-2 bg-primary text-primary-foreground rounded-md hover:bg-primary-dark transition-colors duration-200"
         >
           Try again
         </button>
