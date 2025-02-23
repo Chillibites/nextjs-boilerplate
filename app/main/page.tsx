@@ -1,5 +1,5 @@
 import { redirect } from "next/navigation";
-import getSession from "@/app/lib/getSession";
+import getSession from "@/lib/getSession";
 
 export default async function Main() {
   const session = await getSession();

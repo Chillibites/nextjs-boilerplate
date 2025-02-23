@@ -1,7 +1,7 @@
 import Image from "next/image";
 import { SidebarLink } from "./sidebar";
 import { redirect } from "next/navigation";
-import getSession from "@/app/lib/getSession";
+import getSession from "@/lib/getSession";
 
 export async function ProfileSidebarLink() {
   const session = await getSession()
