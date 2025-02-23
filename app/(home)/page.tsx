@@ -1,4 +1,4 @@
-import { SignInDialog } from "@/components/home/sign-in";
+import { SignInDialog } from "@/components/homeLayout/sign-in";
 
 export default function Home() {
   return (
