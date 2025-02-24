@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Sidebar, SidebarBody, SidebarLink, SidebarTitle } from "@/components/sidebar/sidebar";
 import { navigationLinks } from "@/components/sidebar/nav-links";
 import { ProfileSidebarLink } from "@/components/sidebar/profile-sidebar-link";
+import SidebarSwitch from "@/components/sidebar/sidebar-switch";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -25,7 +26,8 @@ export default async function MainLayout({
                 ))}
               </div>
             </div>
-            <div>
+            <div className="flex flex-col gap-4 mb-4">
+              <SidebarSwitch />
               <ProfileSidebarLink />
             </div>
           </SidebarBody>

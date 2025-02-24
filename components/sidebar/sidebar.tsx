@@ -1,14 +1,15 @@
 "use client";
 
-import { cn } from "@/lib/utils";
-import Link, { LinkProps } from "next/link";
 import React, { useState, createContext, useContext } from "react";
+import Link, { LinkProps } from "next/link";
+import Image from "next/image";
+import { usePathname } from "next/navigation";
 import { AnimatePresence, motion } from "framer-motion";
 import { Menu, X } from "lucide-react";
-import Image from "next/image";
+import { cn } from "@/lib/utils";
 import { geistMono } from "@/components/fonts";
-import { usePathname } from "next/navigation";
 
+// Define the shape of a navigation link.
 interface NavigationLink {
   label: string;
   icon: React.ReactNode;
@@ -16,41 +17,16 @@ interface NavigationLink {
   action?: () => Promise<void>;
 }
 
+// Define a context to manage sidebar state.
 interface SidebarContextProps {
   open: boolean;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
   animate: boolean;
 }
 
-const SidebarContext = createContext<SidebarContextProps | undefined>(
-  undefined
-);
+const SidebarContext = createContext<SidebarContextProps | undefined>(undefined);
 
-export const SidebarTitle = () => {
-  const { open, animate } = useSidebar();
-  
-  return (
-    <div className="flex items-center gap-3">
-      <Image
-        src="/logo.png"
-        className="h-7 w-7 flex-shrink-0"
-        width={50}
-        height={50}
-        alt="Logo"
-      />
-      <motion.span
-        animate={{
-          display: animate ? (open ? "inline-block" : "none") : "inline-block",
-          opacity: animate ? (open ? 1 : 0) : 1,
-        }}
-        className={`${geistMono.className} text-xl font-semibold`}
-      >
-        AceAnswer
-      </motion.span>
-    </div>
-  );
-}; 
-
+// Custom hook to consume the sidebar context.
 export const useSidebar = () => {
   const context = useContext(SidebarContext);
   if (!context) {
@@ -59,6 +35,9 @@ export const useSidebar = () => {
   return context;
 };
 
+/**
+ * Sidebar Provider to wrap sidebar components.
+ */
 export const SidebarProvider = ({
   children,
   open: openProp,
@@ -82,6 +61,9 @@ export const SidebarProvider = ({
   );
 };
 
+/**
+ * Sidebar component that wraps its children with the SidebarProvider.
+ */
 export const Sidebar = ({
   children,
   open,
@@ -100,6 +82,58 @@ export const Sidebar = ({
   );
 };
 
+/**
+ * SidebarTitle that displays the logo and name.
+ */
+export const SidebarTitle = () => {
+  const { open, animate } = useSidebar();
+
+  return (
+    <div className="flex items-center gap-3">
+      <Image
+        src="/logo.png"
+        alt="Logo"
+        width={50}
+        height={50}
+        className="h-7 w-7 flex-shrink-0"
+      />
+      <motion.span
+        animate={{
+          display: animate ? (open ? "inline-block" : "none") : "inline-block",
+          opacity: animate ? (open ? 1 : 0) : 1,
+        }}
+        className={`${geistMono.className} text-xl font-semibold`}
+      >
+        AceAnswer
+      </motion.span>
+    </div>
+  );
+};
+
+/**
+ * Reusable component for rendering animated sidebar label text.
+ */
+const SidebarLabel: React.FC<{ label: string; open: boolean; animate: boolean }> = ({
+  label,
+  open,
+  animate,
+}) => {
+  return (
+    <motion.span
+      animate={{
+        display: animate ? (open ? "inline-block" : "none") : "inline-block",
+        opacity: animate ? (open ? 1 : 0) : 1,
+      }}
+      className="text-sm group-hover/sidebar:translate-x-1 transition duration-150 whitespace-pre inline-block !p-0 !m-0"
+    >
+      {label}
+    </motion.span>
+  );
+};
+
+/**
+ * SidebarBody renders different sidebar components for desktop and mobile.
+ */
 export const SidebarBody = (props: React.ComponentProps<typeof motion.div>) => {
   return (
     <>
@@ -109,6 +143,9 @@ export const SidebarBody = (props: React.ComponentProps<typeof motion.div>) => {
   );
 };
 
+/**
+ * DesktopSidebar for wide screens. It toggles its width on hover.
+ */
 export const DesktopSidebar = ({
   className,
   children,
@@ -133,6 +170,9 @@ export const DesktopSidebar = ({
   );
 };
 
+/**
+ * MobileSidebar renders a collapsible sidebar for mobile devices.
+ */
 export const MobileSidebar = ({
   className,
   children,
@@ -148,10 +188,7 @@ export const MobileSidebar = ({
         {...props}
       >
         <div className="flex justify-end z-20 w-full">
-          <Menu
-            className="cursor-pointer"
-            onClick={() => setOpen(!open)}
-          />
+          <Menu className="cursor-pointer" onClick={() => setOpen(!open)} />
         </div>
         <AnimatePresence>
           {open && (
@@ -183,6 +220,9 @@ export const MobileSidebar = ({
   );
 };
 
+/**
+ * SidebarLink renders either a Next.js Link or a button, depending on whether a href is provided.
+ */
 export const SidebarLink = ({
   link,
   className,
@@ -190,41 +230,32 @@ export const SidebarLink = ({
 }: {
   link: NavigationLink;
   className?: string;
-  props?: Omit<LinkProps, 'href'>;
+  props?: Omit<LinkProps, "href">;
 }) => {
   const { open, animate } = useSidebar();
   const pathname = usePathname();
   const isActive = link.href ? pathname === link.href : false;
 
+  // Clone the icon element to inject conditional styling.
   const iconElement = React.isValidElement(link.icon)
     ? React.cloneElement(link.icon as React.ReactElement<{ className?: string }>, {
         className: cn(
           (link.icon as React.ReactElement<{ className?: string }>).props.className,
-          isActive ? "text-primary" : "text-black dark:text-white" 
+          isActive ? "text-primary" : "text-black dark:text-white"
         ),
       })
     : link.icon;
 
+  // Use Next.js Link if href exists; otherwise, render a button.
   if (link.href) {
     return (
       <Link
         href={link.href}
-        className={cn(
-          "flex items-center justify-start gap-2 group/sidebar py-2",
-          className
-        )}
+        className={cn("flex items-center justify-start gap-2 group/sidebar py-2", className)}
         {...props}
       >
         <span className="flex-shrink-0">{iconElement}</span>
-        <motion.span
-          animate={{
-            display: animate ? (open ? "inline-block" : "none") : "inline-block",
-            opacity: animate ? (open ? 1 : 0) : 1,
-          }}
-          className="text-sm group-hover/sidebar:translate-x-1 transition duration-150 whitespace-pre inline-block !p-0 !m-0"
-        >
-          {link.label}
-        </motion.span>
+        <SidebarLabel label={link.label} open={open} animate={animate} />
       </Link>
     );
   }
@@ -232,22 +263,11 @@ export const SidebarLink = ({
   return (
     <button
       onClick={() => link.action?.()}
-      className={cn(
-        "flex items-center justify-start gap-2 group/sidebar py-2 w-full",
-        className
-      )}
+      className={cn("flex items-center justify-start gap-2 group/sidebar py-2 w-full", className)}
       {...props}
     >
       <span className="flex-shrink-0">{iconElement}</span>
-      <motion.span
-        animate={{
-          display: animate ? (open ? "inline-block" : "none") : "inline-block",
-          opacity: animate ? (open ? 1 : 0) : 1,
-        }}
-        className="text-sm group-hover/sidebar:translate-x-1 transition duration-150 whitespace-pre inline-block !p-0 !m-0"
-      >
-        {link.label}
-      </motion.span>
+      <SidebarLabel label={link.label} open={open} animate={animate} />
     </button>
   );
 };
