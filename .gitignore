@@ -46,5 +46,6 @@ next-env.d.ts
 # notes
 notes/
 
-# cursor
 .cursor/
+
+.cursorignore
