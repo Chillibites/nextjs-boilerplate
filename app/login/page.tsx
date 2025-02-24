@@ -54,7 +54,7 @@ export default function LoginPage() {
       <div className="w-full max-w-md bg-card/80 backdrop-blur-sm p-8 rounded-xl shadow-xl border border-border/50">
         <div className="flex flex-col items-center mb-8">
           <Image 
-            src="/logo.png" 
+            src="/logo.svg" 
             alt="Logo" 
             width={80} 
             height={80}

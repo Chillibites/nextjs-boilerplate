@@ -32,7 +32,7 @@ function SignInDialog() {
             className="flex size-11 shrink-0 items-center justify-center rounded-full"
             aria-hidden="true"
           >
-            <Image src="/logo.png" alt="logo" width={100} height={100} />
+            <Image src="/logo.svg" alt="logo" width={100} height={100} />
           </div>
           <DialogHeader>
             <DialogTitle className="sm:text-center">Sign in</DialogTitle>

@@ -63,7 +63,7 @@ export const Navbar = () => {
     <header className="shadow-inner bg-opacity-15 w-[90%] md:w-[70%] lg:w-[75%] lg:max-w-screen-xl top-5 mx-auto sticky border border-secondary z-40 rounded-2xl flex justify-between items-center p-2 bg-card">
       <Link href="/" className="font-bold text-lg flex items-center">
 
-        <Image src="/logo.png" alt="Logo" width={32} height={32} className="w-9 h-9 mr-2" />
+        <Image src="/logo.svg" alt="Logo" width={32} height={32} className="w-9 h-9 mr-2" />
         <div className={`${geistMono.className} text-xl font-semibold`}>
           AceAnswer
         </div>
@@ -87,7 +87,7 @@ export const Navbar = () => {
                 <SheetTitle className="flex items-center">
                   <Link href="/" className="flex items-center">
                     <Image
-                      src="/logo.png"
+                      src="/logo.svg"
                       className="h-7 w-7 flex-shrink-0"
                       width={50}
                       height={50}
@@ -134,7 +134,7 @@ export const Navbar = () => {
             <NavigationMenuContent>
               <div className="grid w-[600px] grid-cols-2 gap-5 p-4">
                 <Image
-                  src="/logo.png"
+                  src="/logo.svg"
                   alt="Logo"
                   className="h-full w-full rounded-md object-cover"
                   width={600}
