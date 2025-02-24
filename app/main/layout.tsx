@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
-import { Sidebar, SidebarBody, SidebarLink, SidebarTitle } from "@/components/sidebar/sidebar";
-import { navigationLinks } from "@/components/sidebar/nav-links";
+import { Sidebar, SidebarBody, SidebarTitle } from "@/components/sidebar/sidebar";
 import { ProfileSidebarLink } from "@/components/sidebar/profile-sidebar-link";
 import SidebarSwitch from "@/components/sidebar/sidebar-switch";
+import SidebarNavigation from "@/components/sidebar/SidebarNavigation";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -21,9 +21,7 @@ export default async function MainLayout({
             <div className="flex flex-col flex-1 overflow-y-auto overflow-x-hidden">
               <SidebarTitle />
               <div className="mt-8 flex flex-col gap-2">
-                {navigationLinks.map((link, idx) => (
-                  <SidebarLink key={idx} link={link} />
-                ))}
+                <SidebarNavigation />
               </div>
             </div>
             <div className="flex flex-col gap-4 mb-4">
