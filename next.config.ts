@@ -9,6 +9,7 @@ const nextConfig: NextConfig = {
         pathname: '/a/**',
       },
     ],
+    domains: ['oal4ogbsudvw9gbd.public.blob.vercel-storage.com'],
   },
 };
 
