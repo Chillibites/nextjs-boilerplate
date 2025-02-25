@@ -5,7 +5,7 @@ import Link, { LinkProps } from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { AnimatePresence, motion } from "framer-motion";
-import { Menu, X } from "lucide-react";
+import { Menu } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { geistMono } from "@/components/fonts";
 
@@ -183,7 +183,7 @@ export const MobileSidebar = ({
     <>
       <div
         className={cn(
-          "h-10 px-4 py-4 flex flex-row md:hidden items-center justify-between bg-card border-b border-secondary shadow-inner rounded-b-xl w-full"
+          "h-10 px-4 py-4 flex flex-row md:hidden items-center justify-between bg-card border-b border-secondary shadow-inner rounded-b-xl w-full sticky top-0 z-10"
         )}
         {...props}
       >
@@ -201,16 +201,10 @@ export const MobileSidebar = ({
                 ease: "easeInOut",
               }}
               className={cn(
-                "fixed h-full w-full inset-0 bg-card border border-secondary shadow-inner p-10 z-[100] flex flex-col justify-between",
+                "fixed h-[calc(100vh-2.5rem)] w-[250px] top-10 left-0 bg-card border-r border-secondary shadow-lg p-4 z-[100] flex flex-col justify-between overflow-y-auto",
                 className
               )}
             >
-              <div
-                className="absolute right-10 top-10 z-50 cursor-pointer"
-                onClick={() => setOpen(!open)}
-              >
-                <X />
-              </div>
               {children}
             </motion.div>
           )}
