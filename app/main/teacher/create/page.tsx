@@ -17,6 +17,8 @@ import {
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import toast from "react-hot-toast";
+
 
 const formSchema = z.object({
   title: z.string().min(1, {
@@ -25,6 +27,7 @@ const formSchema = z.object({
 });
 
 export default function CreateCoursePage() {
+  
   const router = useRouter();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -37,11 +40,13 @@ export default function CreateCoursePage() {
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
-      const response = await axios.post("/api/courses", values);
-      console.log(response);
+      const response = await axios.post("/api/courses", values, {
+        withCredentials: true,
+      });
       router.push(`/main/teacher/courses/${response.data.id}`);
+      toast.success("Course created successfully");
     } catch (error) {
-      console.log("[CREATE_COURSE]", error);
+      console.log(error);
     }
   };
 

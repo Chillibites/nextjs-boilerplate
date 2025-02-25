@@ -3,9 +3,20 @@ import Github from "next-auth/providers/github"
 import type { NextAuthConfig } from "next-auth"
  
 // Notice this is only an object, not a full Auth.js instance
-export default {
+const authOptions: NextAuthConfig = {
   providers: [Google, Github],
   pages: {
     signIn: "/login",
   },
-} satisfies NextAuthConfig
+  callbacks: {
+    async session({ session, token }) {
+      // Attach the user id from the token (typically token.sub) to the session object
+      if (session.user) {
+        session.user.id = token.sub as string;
+      }
+      return session;
+    },
+  },
+}
+
+export default authOptions
