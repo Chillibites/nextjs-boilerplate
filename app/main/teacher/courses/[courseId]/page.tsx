@@ -2,7 +2,7 @@ import { prisma } from "@/lib/prisma";
 import getSession from "@/lib/getSession";
 import { redirect } from "next/navigation";
 import { IconBadge } from "@/components/icon-badge";
-import { LayoutDashboard } from "lucide-react";
+import { LayoutDashboard, ListChecks, CircleDollarSign } from "lucide-react";
 import { TitleForm } from "./_components/title-form";
 import { DescriptionForm } from "./_components/description-form";
 import { ImageForm } from "./_components/image-form";
@@ -47,28 +47,66 @@ export default async function CoursePage({ params }: CoursePageProps) {
   const completionText = `(${completedFields}/${totalFields})`;
 
   return (
-    <div>
-      <div className="flex items-center justify-between">
+    <div className="p-6 max-w-5xl mx-auto">
+      <div className="flex items-center justify-between bg-white dark:bg-card p-4 rounded-lg shadow-sm mb-8">
         <div className="flex flex-col gap-y-2">
-          <h1 className="text-2xl md:text-4xl">Course</h1>
-          <span className="text-sm md:text-base text-slate-600">
-            complete all fields {completionText}
+          <h1 className="text-2xl md:text-4xl font-bold">Course Setup</h1>
+          <span className="text-sm md:text-base text-muted-foreground">
+            Complete all required fields {completionText}
           </span>
         </div>
-      </div>
-      <div className="flex flex-col gap-y-4">
-        <div className="flex items-center gap-x-2 text-slate-500 text-sm md:text-base">
-          <IconBadge icon={LayoutDashboard} variant="default" />
-          <h2 className="text-xl">Customize your course</h2>
+        <div className="bg-secondary/80 rounded-full px-3 py-1">
+          {completedFields === totalFields ? (
+            <span className="text-sm font-medium text-primary">Complete</span>
+          ) : (
+            <span className="text-sm font-medium text-amber-500">In Progress</span>
+          )}
         </div>
-        <TitleForm initialData={course} courseId={courseId} />
-        <DescriptionForm initialData={course} courseId={courseId} />
-        <ImageForm initialData={course} courseId={courseId} />
-        <CategoryForm initialData={course} courseId={courseId} options={categories.map((category) => ({
-          label: category.name,
-          value: category.id,
-        }))} />
+      </div>
 
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <div className="space-y-6">
+          <div className="flex items-center gap-x-2 mb-4 pb-2 border-b">
+            <IconBadge icon={LayoutDashboard} variant="default" />
+            <h2 className="text-xl font-semibold">Customize your course</h2>
+          </div>
+          
+          <div className="space-y-6 bg-white dark:bg-card p-4 rounded-lg shadow-sm">
+            <TitleForm initialData={course} courseId={courseId} />
+            <DescriptionForm initialData={course} courseId={courseId} />
+            <ImageForm initialData={course} courseId={courseId} />
+            <CategoryForm 
+              initialData={course} 
+              courseId={courseId} 
+              options={categories.map((category) => ({
+                label: category.name,
+                value: category.id,
+              }))} 
+            />
+          </div>
+        </div>
+
+        <div className="space-y-8">
+          <div className="bg-white dark:bg-card p-4 rounded-lg shadow-sm">
+            <div className="flex items-center gap-x-2 mb-4 pb-2 border-b">
+              <IconBadge icon={ListChecks} variant="default" />
+              <h2 className="text-xl font-semibold">Course chapters</h2>
+            </div>
+            <div className="flex flex-col gap-y-4 min-h-[150px] items-center justify-center text-muted-foreground">
+              TODO: Show list of chapters
+            </div>
+          </div>
+          
+          <div className="bg-white dark:bg-card p-4 rounded-lg shadow-sm">
+            <div className="flex items-center gap-x-2 mb-4 pb-2 border-b">
+              <IconBadge icon={CircleDollarSign} variant="default" />
+              <h2 className="text-xl font-semibold">Sell your course</h2>
+            </div>
+            <div className="flex flex-col gap-y-4 min-h-[150px] items-center justify-center text-muted-foreground">
+              TODO: Show list of resources
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );

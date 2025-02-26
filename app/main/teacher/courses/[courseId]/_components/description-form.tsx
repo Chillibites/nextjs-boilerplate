@@ -77,7 +77,7 @@ export const DescriptionForm = ({ initialData, courseId }: DescriptionFormProps)
             ) : (
                 <>
                     <Pencil className="h-4 w-4" />
-                    Edit description
+                    Edit
                 </>
             )}
         </Button>
