@@ -8,6 +8,9 @@ import { DescriptionForm } from "./_components/description-form";
 import { ImageForm } from "./_components/image-form";
 import { CategoryForm } from "./_components/category-form";
 import { PriceForm } from "./_components/price-form";
+import { ChaptersForm } from "./_components/chapters-form";
+
+
 interface CoursePageProps {
   params: Promise<{
     courseId: string;
@@ -24,6 +27,13 @@ export default async function CoursePage({ params }: CoursePageProps) {
   
   const course = await prisma.course.findUnique({
     where: { id: courseId },
+    include: {
+      chapters: {
+        orderBy: {
+          position: "asc",
+        },
+      },
+    },
   });
 
   const categories = await prisma.category.findMany({
@@ -42,6 +52,7 @@ export default async function CoursePage({ params }: CoursePageProps) {
     course.imageUrl,
     course.price,
     course.categoryId,
+    course.chapters.some((chapter) => chapter.isPublished),
   ];
   const totalFields = requiredFields.length;
   const completedFields = requiredFields.filter(Boolean).length;
@@ -93,9 +104,10 @@ export default async function CoursePage({ params }: CoursePageProps) {
               <IconBadge icon={ListChecks} variant="default" />
               <h2 className="text-xl font-semibold">Course chapters</h2>
             </div>
-            <div className="flex flex-col gap-y-4 min-h-[150px] items-center justify-center text-muted-foreground">
-              TODO: Show list of chapters
-            </div>
+              <ChaptersForm 
+                initialData={course} 
+                courseId={courseId}
+                              />
           </div>
           
           <div className="bg-white dark:bg-card p-4 rounded-lg shadow-sm">
@@ -105,8 +117,19 @@ export default async function CoursePage({ params }: CoursePageProps) {
             </div>
             <PriceForm initialData={course} courseId={courseId} />
           </div>
+          <div className="space-y-8">
+          <div className="bg-white dark:bg-card p-4 rounded-lg shadow-sm">
+            <div className="flex items-center gap-x-2 mb-4 pb-2 border-b">
+              <IconBadge icon={ListChecks} variant="default" />
+              <h2 className="text-xl font-semibold">Course attachments</h2>
+            </div>
+            <div className="flex flex-col gap-y-4 min-h-[150px] items-center justify-center text-muted-foreground">
+              TODO: Show list of attachments
+            </div>
+          </div>
         </div>
       </div>
+    </div>
     </div>
   );
 }
