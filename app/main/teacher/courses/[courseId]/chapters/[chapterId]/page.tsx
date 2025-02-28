@@ -7,6 +7,7 @@ import { ChevronLeft } from "lucide-react"
 import { LayoutDashboard } from "lucide-react"
 import { IconBadge } from "@/components/icon-badge"
 import { ChapterTitleForm } from "./_components/chapter-title-form"
+import { ChapterDescriptionForm } from "./_components/chapter-description-form"
 interface ChapterIdPageProps {
   params: Promise<{
     courseId: string;
@@ -81,6 +82,21 @@ export default async function ChapterIdPage({ params }: ChapterIdPageProps) {
                         </h2>
                     </div>
                     <ChapterTitleForm 
+                        initialData={chapter}
+                        courseId={courseId}
+                        chapterId={chapterId}
+                    />
+                </div>
+                <div className="p-6">
+                <div className="flex items-center gap-x-2">
+                        <IconBadge 
+                        icon={LayoutDashboard}
+                        />
+                        <h2 className="text-xl">
+                            Chapter Description
+                        </h2>
+                    </div>
+                    <ChapterDescriptionForm
                         initialData={chapter}
                         courseId={courseId}
                         chapterId={chapterId}
