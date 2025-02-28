@@ -21,7 +21,7 @@ export async function PATCH(
         
         // Await the params promise to extract dynamic route parameters.
         const { courseId, chapterId } = await params;
-        const { title, description } = await req.json();
+        const { isFree, title, description } = await req.json();
 
         const courseOwner = await prisma.course.findUnique({
             where: {
@@ -40,15 +40,16 @@ export async function PATCH(
                 courseId: courseId,
             },
             data: {
-                title,
-                description,
+                title: title,
+                description: description,
+                isFree: isFree,
             },
         });
 
         return NextResponse.json(chapter);
         
     } catch (error) {
-        console.log("[CHAPTERS_REORDER]", error);
+        console.log("[CHAPTERS_UPDATE]", error);
         return new NextResponse("Internal Error", { status: 500 });
     }
 }
