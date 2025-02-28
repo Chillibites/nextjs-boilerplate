@@ -92,23 +92,23 @@ export const ChaptersForm = ({ initialData, courseId }: ChaptersFormProps) => {
   }
 
   return (
-    <div className="mt-6 border border-gray-200 bg-white rounded-md p-6 shadow-sm">
+    <div className="relative mt-6 border border-border bg-card rounded-md p-6 shadow-sm">
       {isUpdating && (
         <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
           <Loader2 className="h-8 w-8 animate-spin text-white" />
         </div>
       )}
-      <div className="font-medium flex items-center justify-between border-b pb-2 mb-4">
+      <div className="font-medium flex items-center justify-between border-b border-border pb-2 mb-4">
         <div className="flex flex-col gap-y-1">
-          <h1 className="text-2xl font-semibold text-gray-800">Course Chapters</h1>
-          <span className="text-sm text-gray-600">
+          <h1 className="text-2xl font-semibold text-card-foreground">Course Chapters</h1>
+          <span className="text-sm text-muted-foreground">
             Manage and arrange your course chapters
           </span>
         </div>
         <Button 
           variant="ghost" 
           size="sm" 
-          className="flex items-center gap-x-2 hover:bg-gray-100 transition-colors"
+          className="flex items-center gap-x-2 hover:bg-muted/20 transition-colors"
           onClick={toggleCreate}
           aria-label={isCreating ? "Cancel adding chapter" : "Add new chapter"}
         >
@@ -135,7 +135,7 @@ export const ChaptersForm = ({ initialData, courseId }: ChaptersFormProps) => {
                       id="chapter-title"
                       disabled={isSubmitting}
                       placeholder="e.g. 'Introduction to the course'"
-                      className="border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      className="border border-input rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-primary"
                       aria-label="Chapter title"
                       {...field}
                     />
@@ -147,7 +147,7 @@ export const ChaptersForm = ({ initialData, courseId }: ChaptersFormProps) => {
             <Button 
               type="submit" 
               disabled={!isValid || isSubmitting}
-              className="bg-blue-500 text-white hover:bg-blue-600 transition-colors"
+              className="bg-primary text-primary-foreground hover:bg-primary/90 transition-colors"
               aria-label="Create chapter"
             >
               Create

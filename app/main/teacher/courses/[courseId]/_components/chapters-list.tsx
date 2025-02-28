@@ -70,9 +70,9 @@ export const ChaptersList = ({
                                         ref={provided.innerRef}
                                         {...provided.draggableProps}
                                         className={cn(
-                                            "bg-slate-100 border border-gray-200 rounded-lg shadow-sm transition duration-200 hover:shadow-md focus:outline-none focus:ring-2 focus:ring-blue-500",
+                                            "bg-card border border-border rounded-lg shadow-sm transition duration-200 hover:shadow-md focus:outline-none focus:ring-2 focus:ring-primary",
                                             chapter.isPublished 
-                                                ? "bg-green-500 hover:bg-green-600 text-white"
+                                                ? "bg-green-600 hover:bg-green-700 text-white"
                                                 : "",
                                             snapshot.isDragging && "opacity-75"
                                         )}
@@ -93,7 +93,7 @@ export const ChaptersList = ({
                                                 >
                                                     <Grip className="h-5 w-5 text-gray-500 cursor-move" />
                                                 </button>
-                                                <span className="font-semibold text-gray-800">
+                                                <span className="font-semibold text-card-foreground">
                                                     {chapter.title}
                                                 </span>
                                             </div>
@@ -110,7 +110,7 @@ export const ChaptersList = ({
                                                 <Button
                                                     size="sm"
                                                     className={cn(
-                                                        chapter.isPublished && "bg-slate-500 hover:bg-slate-600 text-white"
+                                                        chapter.isPublished && "bg-green-700 hover:bg-green-800 text-white"
                                                     )}
                                                     aria-label={chapter.isPublished ? "Published" : "Draft"}
                                                 >
