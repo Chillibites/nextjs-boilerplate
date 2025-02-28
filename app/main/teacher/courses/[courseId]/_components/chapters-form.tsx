@@ -14,7 +14,7 @@ import {
 } from "@/components/ui/form"
 
 import { Button } from "@/components/ui/button"
-import { PlusCircle } from "lucide-react"
+import { Loader2, PlusCircle } from "lucide-react"
 import { toast } from "react-hot-toast"
 import { useRouter } from "next/navigation"
 import { cn } from "@/lib/utils"
@@ -36,6 +36,7 @@ const formSchema = z.object({
 
 export const ChaptersForm = ({ initialData, courseId }: ChaptersFormProps) => {
   const [isCreating, setIsCreating] = useState(false)
+  const [isUpdating, setIsUpdating] = useState(false)
   const router = useRouter()
 
   const toggleCreate = () => {
@@ -73,6 +74,7 @@ export const ChaptersForm = ({ initialData, courseId }: ChaptersFormProps) => {
 
   const onReorder = async (updateData: { id: string; position: number }[]) => {
     try {
+      setIsUpdating(true)
       await axios.put(`/api/courses/${courseId}/chapters/reorder`, {
         list: updateData,
       })
@@ -80,11 +82,22 @@ export const ChaptersForm = ({ initialData, courseId }: ChaptersFormProps) => {
       router.refresh()
     } catch {
       toast.error("Something went wrong")
+    } finally {
+      setIsUpdating(false)
     }
+  }
+
+  const onEdit = (id: string) => {
+    router.push(`/main/teacher/courses/${courseId}/chapters/${id}`)
   }
 
   return (
     <div className="mt-6 border border-gray-200 bg-white rounded-md p-6 shadow-sm">
+      {isUpdating && (
+        <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+          <Loader2 className="h-8 w-8 animate-spin text-white" />
+        </div>
+      )}
       <div className="font-medium flex items-center justify-between border-b pb-2 mb-4">
         <div className="flex flex-col gap-y-1">
           <h1 className="text-2xl font-semibold text-gray-800">Course Chapters</h1>
@@ -148,7 +161,7 @@ export const ChaptersForm = ({ initialData, courseId }: ChaptersFormProps) => {
         )}>
           {!initialData.chapters.length && "No chapters yet"}
           <ChaptersList
-            onEdit={() => {}}
+            onEdit={onEdit}
             onReorder={onReorder}
             items={initialData.chapters as Chapter[]}
           />
