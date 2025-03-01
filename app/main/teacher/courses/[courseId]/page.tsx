@@ -9,6 +9,7 @@ import { ImageForm } from "./_components/image-form";
 import { CategoryForm } from "./_components/category-form";
 import { PriceForm } from "./_components/price-form";
 import { ChaptersForm } from "./_components/chapters-form";
+import { AttachmentForm } from "./_components/attachment-form";
 
 
 interface CoursePageProps {
@@ -33,6 +34,7 @@ export default async function CoursePage({ params }: CoursePageProps) {
           position: "asc",
         },
       },
+      attachments: true,
     },
   });
 
@@ -124,7 +126,10 @@ export default async function CoursePage({ params }: CoursePageProps) {
               <h2 className="text-xl font-semibold">Course attachments</h2>
             </div>
             <div className="flex flex-col gap-y-4 min-h-[150px] items-center justify-center text-muted-foreground">
-              TODO: Show list of attachments
+                <AttachmentForm 
+                  initialData={{ attachments: course.attachments }}
+                  courseId={courseId}
+                />
             </div>
           </div>
         </div>

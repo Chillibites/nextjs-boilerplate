@@ -104,6 +104,8 @@ export const ImageForm = ({ initialData, courseId }: ImageFormProps) => {
                 src={initialData.imageUrl} 
                 alt="Course image" 
                 fill
+                sizes="(max-width: 768px) 100vw, 50vw"
+                priority
                 className="object-cover" />
             </div>
         )
