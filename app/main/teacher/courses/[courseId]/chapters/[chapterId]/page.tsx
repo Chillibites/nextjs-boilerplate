@@ -11,7 +11,8 @@ import { ChapterDescriptionForm } from "./_components/chapter-description-form"
 import { ChapterAccessForm } from "./_components/chapter-access-form"
 import ChapterVideoForm from "./_components/chapter-video-form"
 import { PrismaClient } from "@prisma/client"
-
+import Banner from "@/components/banner"
+import { ChapterAction } from "@/app/main/teacher/courses/[courseId]/_components/chapter-action"
 const prismaClient = new PrismaClient()
 
 interface ChapterIdPageProps {
@@ -68,24 +69,42 @@ export default async function ChapterIdPage({ params }: ChapterIdPageProps) {
         }
         : null;
 
+    const completionPercentage = totalFields > 0 ? Math.round((completedFields / totalFields) * 100) : 0;
+
+    const isCompleted = completionPercentage === 100;
+
+
     return (
-        <main className="min-h-screen bg-background text-foreground">
+        <div className="max-w-5xl mx-auto p-6">
+        {!chapter.isPublished && (
+            <aside
+            role="alert"
+            aria-label="Unpublished Chapter Warning"
+            className="mb-4"
+            >
+            <Banner
+                label="This chapter is not published. It will not be visible to the students."
+                variant="warning"
+            />
+            </aside>
+        )}
+        <main className="bg-background text-foreground min-h-screen rounded-lg shadow-lg">
             <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
                 <header className="mb-8">
-                    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
+                    <nav aria-label="Back Navigation" className="mb-4">
+                        <Link href={`/main/teacher/courses/${courseId}`}>
+                            <Button 
+                                variant="ghost" 
+                                className="flex items-center text-sm hover:underline focus:outline-none focus:ring"
+                                aria-label="Back to chapters"
+                            >
+                                <ChevronLeft className="h-4 w-4 mr-2" />
+                                Back to chapters
+                            </Button>
+                        </Link>
+                    </nav>
+                    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-4">
                         <div className="flex items-center gap-x-2">
-                            <Link href={`/main/teacher/courses/${courseId}`}>
-                                <Button 
-                                    variant="ghost" 
-                                    className="flex items-center text-sm hover:underline focus:outline-none focus:ring"
-                                    aria-label="Back to chapters"
-                                >
-                                    <ChevronLeft className="h-4 w-4 mr-2" />
-                                    Back to chapters
-                                </Button>
-                            </Link>
-                        </div>
-                        <div className="mt-4 sm:mt-0 flex items-center gap-x-2">
                             <progress
                                 value={completedFields}
                                 max={totalFields}
@@ -99,14 +118,21 @@ export default async function ChapterIdPage({ params }: ChapterIdPageProps) {
                                 Complete all fields {completedFields}/{totalFields}
                             </span>
                         </div>
+                        <p className="sr-only" aria-live="polite">
+                            Completion progress: {completedFields} out of {totalFields} fields complete.
+                        </p>
                     </div>
-                    <h1 className="mt-6 text-3xl font-bold">Chapter Details</h1>
+                    <ChapterAction
+                        chapterId={chapterId}
+                        courseId={courseId}
+                        isPublished={chapter.isPublished}
+                        disabled={!isCompleted}
+                    />
+                    <h1 className="text-3xl font-bold mt-6">Chapter Details</h1>
                 </header>
-
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                    {/* Left Column: Forms */}
                     <section aria-labelledby="forms-section" className="space-y-6">
-                        <article className="p-6 bg-card rounded-lg shadow">
+                        <article className="p-6 bg-card rounded-lg shadow hover:shadow-xl transition-shadow">
                             <div className="flex items-center gap-x-2 mb-4">
                                 <IconBadge icon={LayoutDashboard} aria-label="Chapter Details Icon" />
                                 <h2 id="chapter-details-section" className="text-xl font-semibold">
@@ -120,7 +146,7 @@ export default async function ChapterIdPage({ params }: ChapterIdPageProps) {
                             />
                         </article>
                         
-                        <article className="p-6 bg-card rounded-lg shadow">
+                        <article className="p-6 bg-card rounded-lg shadow hover:shadow-xl transition-shadow">
                             <div className="flex items-center gap-x-2 mb-4">
                                 <IconBadge icon={LayoutDashboard} aria-label="Chapter Description Icon" />
                                 <h2 id="chapter-description-section" className="text-xl font-semibold">
@@ -134,7 +160,7 @@ export default async function ChapterIdPage({ params }: ChapterIdPageProps) {
                             />
                         </article>
                         
-                        <article className="p-6 bg-card rounded-lg shadow">
+                        <article className="p-6 bg-card rounded-lg shadow hover:shadow-xl transition-shadow">
                             <div className="flex items-center gap-x-2 mb-4">
                                 <IconBadge icon={Eye} aria-label="Access Settings Icon" />
                                 <h2 id="chapter-access-section" className="text-xl font-semibold">
@@ -149,16 +175,15 @@ export default async function ChapterIdPage({ params }: ChapterIdPageProps) {
                         </article>
                     </section>
 
-                    {/* Right Column: Add a Video */}
                     <section aria-labelledby="add-video-section">
-                        <article className="p-6 bg-card rounded-lg shadow">
+                        <article className="p-6 bg-card rounded-lg shadow hover:shadow-xl transition-shadow">
                             <div className="flex items-center gap-x-2 mb-4">
                                 <IconBadge icon={Video} aria-label="Add Video Icon" />
                                 <h2 id="add-video-section" className="text-xl font-semibold">
                                     Add a Video
                                 </h2>
                             </div>
-                            <p className="text-sm text-muted-foreground">
+                            <p className="text-sm text-muted-foreground mb-4">
                                 Upload or select a video to add to this chapter.
                             </p>
                             <ChapterVideoForm
@@ -171,5 +196,6 @@ export default async function ChapterIdPage({ params }: ChapterIdPageProps) {
                 </div>
             </div>
         </main>
+        </div>
     );
 }
