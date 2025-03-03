@@ -9,6 +9,11 @@ import { IconBadge } from "@/components/icon-badge"
 import { ChapterTitleForm } from "./_components/chapter-title-form"
 import { ChapterDescriptionForm } from "./_components/chapter-description-form"
 import { ChapterAccessForm } from "./_components/chapter-access-form"
+import ChapterVideoForm from "./_components/chapter-video-form"
+import { PrismaClient } from "@prisma/client"
+
+const prismaClient = new PrismaClient()
+
 interface ChapterIdPageProps {
   params: Promise<{
     courseId: string;
@@ -48,6 +53,20 @@ export default async function ChapterIdPage({ params }: ChapterIdPageProps) {
     const requiredFields = [chapter.title, chapter.description, chapter.videoUrl];
     const totalFields = requiredFields.length;
     const completedFields = requiredFields.filter(Boolean).length;
+
+    // Query the chapter along with its related muxData (if available)
+    const prismaChapter = await prismaClient.chapter.findUnique({
+        where: { id: chapterId },
+        include: { muxData: true },
+    });
+
+    // If there is associated muxData, we extract the playbackId and assetId.
+    const initialVideoData = prismaChapter?.muxData
+        ? {
+            playbackId: prismaChapter.muxData.playbackId,
+            assetId: prismaChapter.muxData.assetId,
+        }
+        : null;
 
     return (
         <main className="min-h-screen bg-background text-foreground">
@@ -142,9 +161,11 @@ export default async function ChapterIdPage({ params }: ChapterIdPageProps) {
                             <p className="text-sm text-muted-foreground">
                                 Upload or select a video to add to this chapter.
                             </p>
-                            {/* 
-                              Add your video upload/selection component here.
-                            */}
+                            <ChapterVideoForm
+                                courseId={courseId}
+                                chapterId={chapterId}
+                                initialVideoData={initialVideoData || undefined}
+                            />
                         </article>
                     </section>
                 </div>
