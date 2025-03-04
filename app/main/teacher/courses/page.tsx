@@ -1,15 +1,39 @@
-import { Button } from "@/components/ui/button";
-import Link from "next/link";
-import { Plus } from "lucide-react";
-export default function TeacherCoursesPage() {
+
+import { redirect } from "next/navigation";
+import { columns } from "./_components/columns";
+import { DataTable } from "./_components/data-table";
+import getSession from "@/lib/getSession"
+import { prisma } from "@/lib/prisma";
+
+interface TeacherCoursesPageProps {
+  params: Promise<{
+    userId: string;
+  }>;
+}
+
+export default async function TeacherCoursesPage({
+  params,
+}: TeacherCoursesPageProps) {
+  const session = await getSession()
+  if (!session) {
+    redirect("/")
+  }
+
+  const { userId } = await params
+
+  const courses = await prisma.course.findMany({
+    where: {
+      userId,
+    },
+    orderBy: {
+      createdAt: "desc",
+    },
+  })
+
   return (
     <div className="p-6">
-      <Link href="/main/teacher/create">
-        <Button>
-          New Course
-          <Plus className="w-4 h-4 ml-2" />
-        </Button>
-      </Link>
+      <DataTable columns={columns} data={courses} />
+    
     </div>
   );
 }
