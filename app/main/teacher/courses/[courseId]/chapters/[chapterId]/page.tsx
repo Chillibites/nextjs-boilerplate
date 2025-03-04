@@ -51,7 +51,9 @@ export default async function ChapterIdPage({ params }: ChapterIdPageProps) {
         return redirect("/");
     }
     
-    const requiredFields = [chapter.title, chapter.description, chapter.videoUrl];
+    // Update the required fields for determining completion:
+    // Video upload is now optional.
+    const requiredFields = [chapter.title, chapter.description];
     const totalFields = requiredFields.length;
     const completedFields = requiredFields.filter(Boolean).length;
 
@@ -70,9 +72,7 @@ export default async function ChapterIdPage({ params }: ChapterIdPageProps) {
         : null;
 
     const completionPercentage = totalFields > 0 ? Math.round((completedFields / totalFields) * 100) : 0;
-
     const isCompleted = completionPercentage === 100;
-
 
     return (
         <div className="max-w-5xl mx-auto p-6">
@@ -115,7 +115,7 @@ export default async function ChapterIdPage({ params }: ChapterIdPageProps) {
                                 aria-label="Completion progress"
                             />
                             <span className="text-sm text-muted-foreground">
-                                Complete all fields {completedFields}/{totalFields}
+                                Complete required fields {completedFields}/{totalFields}
                             </span>
                         </div>
                         <p className="sr-only" aria-live="polite">
@@ -180,7 +180,7 @@ export default async function ChapterIdPage({ params }: ChapterIdPageProps) {
                             <div className="flex items-center gap-x-2 mb-4">
                                 <IconBadge icon={Video} aria-label="Add Video Icon" />
                                 <h2 id="add-video-section" className="text-xl font-semibold">
-                                    Add a Video
+                                    Optional: Add a Video
                                 </h2>
                             </div>
                             <p className="text-sm text-muted-foreground mb-4">
