@@ -10,7 +10,8 @@ import { CategoryForm } from "./_components/category-form";
 import { PriceForm } from "./_components/price-form";
 import { ChaptersForm } from "./_components/chapters-form";
 import { AttachmentForm } from "./_components/attachment-form";
-
+import Banner from "@/components/banner";
+import { Action } from "./_components/actions";
 
 interface CoursePageProps {
   params: Promise<{
@@ -60,7 +61,16 @@ export default async function CoursePage({ params }: CoursePageProps) {
   const completedFields = requiredFields.filter(Boolean).length;
   const completionText = `(${completedFields}/${totalFields})`;
 
+  const isCompleted = requiredFields.every(Boolean);
+
   return (
+    <>
+    {!course.isPublished && (
+      <Banner
+        variant="warning"
+        label="This course is unpublished. It will not be visible to the students."
+      />
+    )}
     <div className="p-6 max-w-5xl mx-auto">
       <div className="flex items-center justify-between bg-white dark:bg-card p-4 rounded-lg shadow-sm mb-8">
         <div className="flex flex-col gap-y-2">
@@ -69,6 +79,7 @@ export default async function CoursePage({ params }: CoursePageProps) {
             Complete all required fields {completionText}
           </span>
         </div>
+        <Action courseId={courseId} isPublished={course.isPublished} disabled={!isCompleted} />
         <div className="bg-secondary/80 rounded-full px-3 py-1">
           {completedFields === totalFields ? (
             <span className="text-sm font-medium text-primary">Complete</span>
@@ -136,5 +147,6 @@ export default async function CoursePage({ params }: CoursePageProps) {
       </div>
     </div>
     </div>
+    </>
   );
 }

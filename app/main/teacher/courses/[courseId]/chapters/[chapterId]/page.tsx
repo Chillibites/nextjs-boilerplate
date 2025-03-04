@@ -12,7 +12,7 @@ import { ChapterAccessForm } from "./_components/chapter-access-form"
 import ChapterVideoForm from "./_components/chapter-video-form"
 import { PrismaClient } from "@prisma/client"
 import Banner from "@/components/banner"
-import { ChapterAction } from "@/app/main/teacher/courses/[courseId]/_components/chapter-action"
+import { ChapterAction } from "./_components/chapter-action"
 const prismaClient = new PrismaClient()
 
 interface ChapterIdPageProps {
