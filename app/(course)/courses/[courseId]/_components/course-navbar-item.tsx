@@ -23,24 +23,21 @@ export const CourseSidebarItem = (props: CourseSidebarItemProps) => {
     const isActive = pathname?.includes(id);
 
     const onClick = () => {
-        if (!isLocked) {
-            router.push(`/courses/${courseId}/chapters/${id}`);
-        }
+        router.push(`/courses/${courseId}/chapters/${id}`);
     }
 
     return (
         <Button
         type="button"
-        disabled={isLocked}
         aria-current={isActive ? "page" : undefined}
         onClick={onClick}
         className={cn(
-            "flex justify-start gap-3 items-center w-full text-sm font-medium px-6 py-3 transition ease-in-out duration-200 rounded-md active:scale-95",
+            "flex justify-start gap-3 items-center w-full text-sm font-medium px-6 py-4 transition ease-in-out duration-200 rounded-md active:scale-95",
             "focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[hsl(var(--ring))]",
             "bg-transparent",
             "text-[hsl(var(--card-foreground))]",
             "cursor-pointer",
-            isLocked && "opacity-50 cursor-not-allowed",
+            isLocked && "opacity-50",
             !isLocked && "hover:bg-[hsl(var(--secondary))] hover:text-[hsl(var(--primary))]",
             isActive && "bg-[hsl(var(--muted))] text-[hsl(var(--primary))]"
         )}

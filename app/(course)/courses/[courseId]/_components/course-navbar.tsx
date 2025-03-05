@@ -57,16 +57,18 @@ export const CourseNavbar = ({
                 Chapters
               </NavigationMenuTrigger>
               <NavigationMenuContent className="flex flex-col gap-2">
-                {course.chapters.map((chapter) => (
-                  <CourseSidebarItem 
-                    key={chapter.id} 
-                    label={chapter.title}
-                    id={chapter.id}
-                    courseId={course.id}
+                <div className="flex flex-col gap-2 px-4 py-2">
+                  {course.chapters.map((chapter) => (
+                    <CourseSidebarItem 
+                      key={chapter.id} 
+                      label={chapter.title}
+                      id={chapter.id}
+                      courseId={course.id}
                     isCompleted={!!chapter.userProgress?.[0]?.isCompleted}
                     isLocked={!chapter.isFree && !hasPurchased}
-                  />
-                ))}
+                    />
+                  ))}
+                </div>
               </NavigationMenuContent>
             </NavigationMenuItem>
           </NavigationMenuList>
@@ -108,8 +110,8 @@ export const CourseNavbar = ({
                 </SheetTitle>
                 <SheetDescription className="sr-only">Course Chapters</SheetDescription>
               </SheetHeader>
-              <div className="flex-1 w-full overflow-auto">
-                {course.chapters.map((chapter) => (
+              <div className="flex flex-col gap-2 px-2 py-2">
+              {course.chapters.map((chapter) => (
                   <CourseSidebarItem 
                     key={chapter.id} 
                     label={chapter.title}
