@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import MuxUploader from "./MuxUploader";
-import MuxPlayer from "./MuxPlayer";
+import MuxPlayer from "@/components/MuxPlayer";
 
 type ChapterVideoProps = {
   // When the chapter already has a video, the server can pass these in.
